@@ -491,7 +491,7 @@ button:hover {
 </div>
 
 <script>
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykWOGSUkHBcoi5wLR2AuZAREstvuufb18U_pinBB8txDQ1Z7HW3tbG0r-4AnNOYck3cg/exec"; 
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwc8jh-K8C6g0xlT4jthiX5rzzWrhX7yYravg6Pz9vkUe_pgnGfkPqlKps59D6veey_/exec"; 
 const TEACHER_PIN = "egam@2026";
 
 const TIME_LIMIT_SECONDS = 30 * 60;
@@ -577,4 +577,488 @@ const questions = [
         instructions: "Listen and choose the best answer. You will hear each recording twice.",
         prompt: "Where's Dad now?",
         audioSrc: "q11.mp3",
-        options:
+        options: [
+            { label: "Living Room", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#e0f2fe; border-radius:8px;"><rect x="10" y="90" width="180" height="60" fill="#38bdf8"/><rect x="90" y="70" width="90" height="50" rx="8" fill="#ef4444"/><rect x="20" y="100" width="50" height="30" rx="4" fill="#f59e0b"/><rect x="20" y="50" width="40" height="30" rx="2" fill="#334155"/></svg>` },
+            { label: "Bathroom", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#fef3c7; border-radius:8px;"><rect x="10" y="20" width="180" height="130" fill="#fef08a" opacity="0.4"/><ellipse cx="60" cy="70" rx="25" ry="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="3"/><rect x="100" y="60" width="80" height="60" rx="15" fill="#ffffff" stroke="#0284c7" stroke-width="4"/></svg>` },
+            { label: "Kitchen", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#d1fae5; border-radius:8px;"><rect x="10" y="70" width="180" height="75" fill="#ffffff" stroke="#64748b" stroke-width="2"/><rect x="120" y="80" width="50" height="55" fill="#e2e8f0" stroke="#475569" stroke-width="2"/><circle cx="145" cy="70" r="10" fill="#dc2626"/></svg>` }
+        ],
+        correct: 2
+    },
+    {
+        id: 6,
+        type: "audio-listening",
+        category: "listeningComprehension",
+        skill: "Listening: Details & Clothes",
+        instructions: "Listen and choose the best answer. You will hear each recording twice.",
+        prompt: "What will Natalie wear to the party?",
+        audioSrc: "q12.mp3",
+        options: [
+            { label: "Jeans & Star T-Shirt", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#fef9c3; border-radius:8px;"><path d="M 50,20 L 90,20 L 95,130 L 75,130 L 70,70 L 65,130 L 45,130 Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/><rect x="115" y="35" width="55" height="50" rx="6" fill="#6b21a8"/><path d="M 105,35 L 120,35 L 115,55 L 105,55 Z M 165,35 L 180,35 L 180,55 L 170,55 Z" fill="#6b21a8"/><text x="142" y="65" font-size="20" text-anchor="middle" fill="#facc15">★</text></svg>` },
+            { label: "Skirt & Plain T-Shirt", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#fef9c3; border-radius:8px;"><path d="M 50,70 L 90,70 L 105,130 L 35,130 Z" fill="#0284c7" stroke="#0369a1" stroke-width="2"/><rect x="115" y="25" width="55" height="50" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><path d="M 105,25 L 120,25 L 115,45 L 105,45 Z M 165,25 L 180,25 L 180,45 L 170,45 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/></svg>` },
+            { label: "Jeans & Plain T-Shirt", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#fef9c3; border-radius:8px;"><path d="M 50,20 L 90,20 L 95,130 L 75,130 L 70,70 L 65,130 L 45,130 Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/><rect x="115" y="35" width="55" height="50" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><path d="M 105,35 L 120,35 L 115,55 L 105,55 Z M 165,35 L 180,35 L 180,45 L 170,45 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/></svg>` }
+        ],
+        correct: 0
+    },
+    {
+        id: 7,
+        type: "audio-listening",
+        category: "listeningComprehension",
+        skill: "Listening: Current Activity",
+        instructions: "Listen and choose the best answer. You will hear each recording twice.",
+        prompt: "What's Ellie doing now?",
+        audioSrc: "q13.mp3",
+        options: [
+            { label: "Playing Piano", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#fff7ed; border-radius:8px;"><rect x="20" y="40" width="160" height="80" rx="4" fill="#b45309"/><rect x="30" y="70" width="140" height="40" fill="#ffffff" stroke="#451a03"/><rect x="40" y="70" width="10" height="25" fill="#000"/><rect x="60" y="70" width="10" height="25" fill="#000"/><rect x="80" y="70" width="10" height="25" fill="#000"/><rect x="110" y="70" width="10" height="25" fill="#000"/><rect x="130" y="70" width="10" height="25" fill="#000"/></svg>` },
+            { label: "Playing Video Games", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#f0f9ff; border-radius:8px;"><rect x="50" y="20" width="100" height="65" rx="6" fill="#0284c7"/><rect x="58" y="28" width="84" height="48" rx="2" fill="#38bdf8"/><rect x="75" y="100" width="50" height="20" rx="10" fill="#64748b"/></svg>` },
+            { label: "Doing Homework", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#e0e7ff; border-radius:8px;"><rect x="30" y="100" width="140" height="30" fill="#f59e0b"/><rect x="60" y="30" width="80" height="80" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><line x1="75" y1="50" x2="125" y2="50" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/><line x1="75" y1="65" x2="125" y2="65" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/><line x1="75" y1="80" x2="105" y2="80" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/></svg>` }
+        ],
+        correct: 2
+    },
+    {
+        id: 8,
+        type: "audio-listening",
+        category: "listeningComprehension",
+        skill: "Listening: Objects & Favorites",
+        instructions: "Listen and choose the best answer. You will hear each recording twice.",
+        prompt: "What's the girl's favourite birthday present?",
+        audioSrc: "q14.mp3",
+        options: [
+            { label: "Robot", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#fce7f3; border-radius:8px;"><rect x="80" y="25" width="40" height="30" rx="6" fill="#cbd5e1" stroke="#475569" stroke-width="2"/><circle cx="90" cy="38" r="5" fill="#eab308"/><circle cx="110" cy="38" r="5" fill="#eab308"/><rect x="70" y="60" width="60" height="50" rx="8" fill="#e2e8f0" stroke="#0284c7" stroke-width="3"/><rect x="85" y="70" width="30" height="30" fill="#38bdf8"/><rect x="45" y="65" width="20" height="10" rx="4" fill="#0284c7"/><rect x="135" y="65" width="20" height="10" rx="4" fill="#0284c7"/><rect x="80" y="115" width="12" height="20" rx="3" fill="#0284c7"/><rect x="108" y="115" width="12" height="20" rx="3" fill="#0284c7"/></svg>` },
+            { label: "Mobile Phone", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#e0f2fe; border-radius:8px;"><rect x="70" y="20" width="60" height="110" rx="10" fill="#e2e8f0" stroke="#64748b" stroke-width="3"/><rect x="78" y="32" width="44" height="55" rx="4" fill="#38bdf8"/><circle cx="85" cy="98" r="3" fill="#94a3b8"/><circle cx="100" cy="98" r="3" fill="#94a3b8"/><circle cx="115" cy="98" r="3" fill="#94a3b8"/><circle cx="85" cy="110" r="3" fill="#94a3b8"/><circle cx="100" cy="110" r="3" fill="#94a3b8"/><circle cx="115" cy="110" r="3" fill="#94a3b8"/></svg>` },
+            { label: "Bicycle", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#d1fae5; border-radius:8px;"><circle cx="55" cy="100" r="28" fill="none" stroke="#334155" stroke-width="4"/><circle cx="145" cy="100" r="28" fill="none" stroke="#334155" stroke-width="4"/><path d="M 55,100 L 95,100 L 125,60 L 75,60 Z M 95,100 L 75,60" fill="none" stroke="#0284c7" stroke-width="4"/><path d="M 125,60 L 130,45 L 140,45" fill="none" stroke="#334155" stroke-width="3"/><rect x="65" y="52" width="20" height="8" rx="3" fill="#78350f"/></svg>` }
+        ],
+        correct: 0
+    },
+    {
+        id: 9,
+        type: "audio-listening",
+        category: "listeningComprehension",
+        skill: "Listening: Time & Schedule",
+        instructions: "Listen and choose the best answer. You will hear each recording twice.",
+        prompt: "What time is the football match?",
+        audioSrc: "q15.mp3",
+        options: [
+            { label: "3:15", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#fef9c3; border-radius:8px;"><circle cx="100" cy="75" r="50" fill="#ffffff" stroke="#475569" stroke-width="4"/><line x1="100" y1="75" x2="135" y2="75" stroke="#0284c7" stroke-width="4" stroke-linecap="round"/><line x1="100" y1="75" x2="130" y2="75" stroke="#334155" stroke-width="3" stroke-linecap="round"/><circle cx="100" cy="75" r="4" fill="#334155"/></svg>` },
+            { label: "3:30", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#fef9c3; border-radius:8px;"><circle cx="100" cy="75" r="50" fill="#ffffff" stroke="#475569" stroke-width="4"/><line x1="100" y1="75" x2="120" y2="80" stroke="#0284c7" stroke-width="4" stroke-linecap="round"/><line x1="100" y1="75" x2="100" y2="115" stroke="#334155" stroke-width="3" stroke-linecap="round"/><circle cx="100" cy="75" r="4" fill="#334155"/></svg>` },
+            { label: "3:45", svg: `<svg viewBox="0 0 200 150" style="width:100%; height:110px; background:#fef9c3; border-radius:8px;"><circle cx="100" cy="75" r="50" fill="#ffffff" stroke="#475569" stroke-width="4"/><line x1="100" y1="75" x2="125" y2="78" stroke="#0284c7" stroke-width="4" stroke-linecap="round"/><line x1="100" y1="75" x2="65" y2="75" stroke="#334155" stroke-width="3" stroke-linecap="round"/><circle cx="100" cy="75" r="4" fill="#334155"/></svg>` }
+        ],
+        correct: 2
+    }
+];
+
+let selectedMediaOption = null;
+
+function openTeacherLogin() {
+    let pin = prompt("Enter Security Passcode to access Teacher Dashboard:");
+    if (pin === TEACHER_PIN) {
+        document.getElementById("startScreen").classList.add("hidden");
+        document.getElementById("resultScreen").classList.add("hidden");
+        document.getElementById("teacherScreen").classList.remove("hidden");
+        loadTeacherDashboard();
+    } else if (pin !== null) {
+        alert("Incorrect Passcode. Access Denied.");
+    }
+}
+
+function exitTeacherPortal() {
+    document.getElementById("teacherScreen").classList.add("hidden");
+    document.getElementById("startScreen").classList.remove("hidden");
+}
+
+function loadTeacherDashboard() {
+    let tbody = document.getElementById("teacherTableBody");
+    tbody.innerHTML = `<tr><td colspan="8">Loading records from Cloud Database...</td></tr>`;
+
+    const script = document.createElement('script');
+    const callbackName = 'googleSheetsCallback_' + Math.floor(Math.random() * 1000000);
+    
+    window[callbackName] = function(data) {
+        delete window[callbackName];
+        if (document.body.contains(script)) document.body.removeChild(script);
+        currentLoadedRecords = Array.isArray(data) ? data : [];
+        renderTableData(currentLoadedRecords);
+    };
+
+    script.src = `${GOOGLE_SCRIPT_URL}?callback=${callbackName}&_=${Date.now()}`;
+    script.onerror = function() {
+        delete window[callbackName];
+        if (document.body.contains(script)) document.body.removeChild(script);
+        tbody.innerHTML = `<tr><td colspan="8" style="color:red;">Error fetching records. Ensure Apps Script access is set to 'Anyone'.</td></tr>`;
+    };
+
+    document.body.appendChild(script);
+}
+
+function renderTableData(records) {
+    let tbody = document.getElementById("teacherTableBody");
+    tbody.innerHTML = "";
+
+    if (!records || records.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8">No student submissions recorded yet.</td></tr>`;
+        return;
+    }
+
+    records.forEach((r, index) => {
+        let switchBadge = r.tabSwitches > 0 ? `<span style="color:red; font-weight:bold;">${r.tabSwitches}</span>` : "0";
+        tbody.innerHTML += `
+            <tr>
+                <td><b>${r.name}</b></td>
+                <td>${r.timeTaken || 'N/A'}</td>
+                <td>${r.score} / ${r.total}</td>
+                <td>${r.percentage}%</td>
+                <td>${r.placement}</td>
+                <td>${switchBadge}</td>
+                <td>${r.date}</td>
+                <td><button class="btn-small btn-secondary" onclick="viewStudentDetails(${index})">View Breakdown</button></td>
+            </tr>
+        `;
+    });
+}
+
+function viewStudentDetails(index) {
+    let student = currentLoadedRecords[index];
+    if (!student) return;
+
+    document.getElementById("modalStudentName").textContent = student.name;
+    document.getElementById("modalMeta").textContent = `Time Elapsed: ${student.timeTaken || 'N/A'} | Score: ${student.score}/${student.total} (${student.percentage}%) | Placement: ${student.placement} | Tab Switches: ${student.tabSwitches || 0} | Date: ${student.date}`;
+
+    let html = "";
+    if (student.details && student.details.length > 0) {
+        student.details.forEach((item, i) => {
+            let statusClass = item.isCorrect ? "status-correct" : "status-incorrect";
+            let statusText = item.isCorrect ? "✓ Correct" : "✗ Incorrect";
+
+            html += `
+                <div class="detail-card">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <b>Q${i + 1}: ${item.skill}</b>
+                        <span class="${statusClass}">${statusText}</span>
+                    </div>
+                    <div style="font-size:14px; color:#444; margin-bottom:8px;">${item.question}</div>
+                    <div style="font-size:13px; margin-bottom: 4px;"><b>Selected Answer:</b> ${item.selectedAnswer}</div>
+                    <div style="font-size:13px;"><b>Correct Answer:</b> ${item.correctAnswer}</div>
+                </div>
+            `;
+        });
+    } else {
+        html = "<p>No detailed item analysis available for this entry.</p>";
+    }
+
+    document.getElementById("modalDetailsArea").innerHTML = html;
+    let modal = document.getElementById("detailModal");
+    modal.style.display = "flex";
+    modal.classList.add("active");
+}
+
+function closeModal() {
+    let modal = document.getElementById("detailModal");
+    modal.style.display = "none";
+    modal.classList.remove("active");
+}
+
+function exportClassExcel() {
+    let records = currentLoadedRecords;
+    if (!records || records.length === 0) {
+        alert("No results available to export.");
+        return;
+    }
+
+    let csv = "\uFEFFStudent Name,Time Taken,Score,Total Attempted,Percentage,Placement,Tab Switches,Visual Reading,Dialogue Responses,Listening Comprehension,Date,Question Number,Skill,Question Text,Student Answer,Correct Answer,Status\n";
+    
+    records.forEach(r => {
+        let b = r.breakdown || {};
+        if (r.details && r.details.length > 0) {
+            r.details.forEach((d, idx) => {
+                let status = d.isCorrect ? "Correct" : "Incorrect";
+                csv += `"${r.name.replace(/"/g, '""')}","${r.timeTaken || 'N/A'}",${r.score},${r.total},${r.percentage}%,"${r.placement}",${r.tabSwitches || 0},"${b.visualReading || '-'}","${b.dialogueResponse || '-'}","${b.listeningComprehension || '-'}","${r.date}",${idx + 1},"${(d.skill || '').replace(/"/g, '""')}","${(d.question || '').replace(/"/g, '""')}","${(d.selectedAnswer || '').replace(/"/g, '""')}","${(d.correctAnswer || '').replace(/"/g, '""')}","${status}"\n`;
+            });
+        } else {
+            csv += `"${r.name.replace(/"/g, '""')}","${r.timeTaken || 'N/A'}",${r.score},${r.total},${r.percentage}%,"${r.placement}",${r.tabSwitches || 0},"${b.visualReading || '-'}","${b.dialogueResponse || '-'}","${b.listeningComprehension || '-'}","${r.date}",N/A,N/A,N/A,N/A,N/A,N/A\n`;
+        }
+    });
+
+    let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "MAGE_English_Class_Results_MS_Excel.csv";
+    link.click();
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timeRemaining--;
+        let mins = Math.floor(timeRemaining / 60);
+        let secs = timeRemaining % 60;
+        document.getElementById("timeDisplay").textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            finishTest();
+        }
+    }, 1000);
+}
+
+function getFormattedTimeTaken() {
+    if (!testStartTime) return "N/A";
+    let elapsedSeconds = Math.floor((Date.now() - testStartTime) / 1000);
+    let mins = Math.floor(elapsedSeconds / 60);
+    let secs = elapsedSeconds % 60;
+    return `${mins}m ${secs}s`;
+}
+
+function startTest() {
+    studentName = document.getElementById("studentName").value.trim();
+    if (!studentName) {
+        alert("Please enter student name.");
+        return;
+    }
+
+    currentQuestionIndex = 0;
+    score = 0;
+    tabSwitchCount = 0;
+    isTestActive = true;
+    testStartTime = Date.now();
+    studentAnswersList = [];
+
+    document.getElementById("startScreen").classList.add("hidden");
+    document.getElementById("testScreen").classList.remove("hidden");
+    startTimer();
+    renderQuestion();
+}
+
+function renderQuestion() {
+    selectedMediaOption = null;
+    const q = questions[currentQuestionIndex];
+    document.getElementById("questionNumber").textContent = `${currentQuestionIndex + 1}`;
+
+    let html = "";
+
+    if (q.type === 'multi-dialogue') {
+        html += `<p style="font-size:14px; font-weight:bold; color:#666; uppercase;">${q.instructions}</p>`;
+        q.subQuestions.forEach((sq, sIdx) => {
+            html += `
+                <div style="margin-bottom:20px; padding-bottom:15px; border-bottom:1px solid #eee;">
+                    <div class="question" style="font-size:17px; margin:10px 0;">${sq.prompt}</div>
+                    ${sq.options.map((opt, oIdx) => `
+                        <label class="option">
+                            <input type="radio" name="sub_q_${sIdx}" value="${oIdx}">
+                            <span>${opt}</span>
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+        });
+    } else if (q.type === 'audio-listening') {
+        html += `
+            <p style="font-size:13px; font-weight:bold; color:#666; uppercase;">${q.instructions}</p>
+            <div class="question">${q.prompt}</div>
+            
+            <div class="audio-box">
+                <div style="font-weight:bold; color:var(--primary-color);">🔊 Audio Listening Clip</div>
+                <audio controls style="width:100%;">
+                    <source src="${q.audioSrc}" type="audio/mpeg">
+                    Your browser does not support the audio player.
+                </audio>
+            </div>
+
+            <div class="media-option-grid">
+                ${q.options.map((opt, idx) => `
+                    <div id="media_card_${idx}" class="media-card" onclick="selectMediaCard(${idx})">
+                        ${opt.svg}
+                        <div style="margin-top:8px; font-weight:bold; font-size:14px; color:#444;">${opt.label}</div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    } else {
+        html += `
+            <div style="text-align:center; margin-bottom:15px;">${q.svgGraphic}</div>
+            <div class="question">${q.title}</div>
+            ${q.options.map((opt, idx) => `
+                <label class="option">
+                    <input type="radio" name="standard_answer" value="${idx}">
+                    <span>${opt}</span>
+                </label>
+            `).join('')}
+        `;
+    }
+
+    document.getElementById("questionArea").innerHTML = html;
+}
+
+function selectMediaCard(index) {
+    selectedMediaOption = index;
+    const cards = document.querySelectorAll('.media-card');
+    cards.forEach((card, idx) => {
+        if (idx === index) {
+            card.classList.add('selected');
+        } else {
+            card.classList.remove('selected');
+        }
+    });
+}
+
+function submitAnswer() {
+    const q = questions[currentQuestionIndex];
+
+    if (q.type === 'multi-dialogue') {
+        let allAnswered = true;
+        q.subQuestions.forEach((sq, sIdx) => {
+            const selected = document.querySelector(`input[name="sub_q_${sIdx}"]:checked`);
+            if (!selected) allAnswered = false;
+        });
+
+        if (!allAnswered) {
+            alert("Please answer all parts of the dialogue question.");
+            return;
+        }
+
+        q.subQuestions.forEach((sq, sIdx) => {
+            const selected = Number(document.querySelector(`input[name="sub_q_${sIdx}"]:checked`).value);
+            const isCorrect = selected === sq.correct;
+            if (isCorrect) score++;
+
+            studentAnswersList.push({
+                question: sq.prompt,
+                category: q.category,
+                skill: q.skill,
+                selectedAnswer: sq.options[selected],
+                correctAnswer: sq.options[sq.correct],
+                isCorrect: isCorrect
+            });
+        });
+
+    } else if (q.type === 'audio-listening') {
+        if (selectedMediaOption === null) {
+            alert("Please select one of the image choices.");
+            return;
+        }
+
+        const isCorrect = selectedMediaOption === q.correct;
+        if (isCorrect) score++;
+
+        studentAnswersList.push({
+            question: q.prompt,
+            category: q.category,
+            skill: q.skill,
+            selectedAnswer: q.options[selectedMediaOption].label,
+            correctAnswer: q.options[q.correct].label,
+            isCorrect: isCorrect
+        });
+
+    } else {
+        const selected = document.querySelector('input[name="standard_answer"]:checked');
+        if (!selected) {
+            alert("Please select an answer.");
+            return;
+        }
+
+        const selectedIndex = Number(selected.value);
+        const isCorrect = selectedIndex === q.correct;
+        if (isCorrect) score++;
+
+        studentAnswersList.push({
+            question: q.title,
+            category: q.category,
+            skill: q.skill,
+            selectedAnswer: q.options[selectedIndex],
+            correctAnswer: q.options[q.correct],
+            isCorrect: isCorrect
+        });
+    }
+
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        renderQuestion();
+    } else {
+        finishTest();
+    }
+}
+
+function calculateCategoryBreakdown() {
+    let totals = {
+        visualReading: { correct: 0, total: 0 },
+        dialogueResponse: { correct: 0, total: 0 },
+        listeningComprehension: { correct: 0, total: 0 }
+    };
+
+    studentAnswersList.forEach(ans => {
+        let cat = ans.category || "visualReading";
+        if (totals[cat]) {
+            totals[cat].total++;
+            if (ans.isCorrect) totals[cat].correct++;
+        }
+    });
+
+    let breakdown = {};
+    for (let key in totals) {
+        if (totals[key].total > 0) {
+            let pct = Math.round((totals[key].correct / totals[key].total) * 100);
+            breakdown[key] = `${pct}% (${totals[key].correct}/${totals[key].total})`;
+        } else {
+            breakdown[key] = "-";
+        }
+    }
+
+    return breakdown;
+}
+
+function finishTest() {
+    if (!isTestActive && document.getElementById("testScreen").classList.contains("hidden")) return;
+    
+    isTestActive = false;
+    clearInterval(timerInterval);
+    document.getElementById("testScreen").classList.add("hidden");
+    document.getElementById("resultScreen").classList.remove("hidden");
+
+    let totalPoints = 11;
+    let percentage = Math.round((score / totalPoints) * 100);
+    let targetGrade = "";
+
+    if (percentage >= 80) {
+        targetGrade = "Advanced English Track";
+    } else if (percentage >= 55) {
+        targetGrade = "Standard English Track";
+    } else {
+        targetGrade = "Foundation English Track";
+    }
+
+    document.getElementById("displayStudentName").textContent = studentName;
+    sendToCloudDatabase(percentage, targetGrade, totalPoints);
+}
+
+function sendToCloudDatabase(percentage, placement, total) {
+    document.getElementById("savingMessage").textContent = "Submitting to central database...";
+    
+    const breakdown = calculateCategoryBreakdown();
+    const timeTaken = getFormattedTimeTaken();
+
+    const data = {
+        name: studentName,
+        timeTaken: timeTaken,
+        score: score,
+        total: total,
+        percentage: percentage,
+        placement: placement,
+        tabSwitches: tabSwitchCount,
+        breakdown: breakdown,
+        date: new Date().toLocaleDateString(),
+        details: studentAnswersList
+    };
+
+    fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(data)
+    })
+    .then(() => {
+        document.getElementById("savingMessage").textContent = "Assessment submitted successfully!";
+    })
+    .catch(() => {
+        document.getElementById("savingMessage").textContent = "Submission recorded. Please check connection if missing from Sheet.";
+    });
+}
+</script>
+
+</body>
+</html>
