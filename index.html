@@ -406,7 +406,7 @@ button:hover {
         <b>📌 Important Instructions:</b>
         <ul>
             <li>This diagnostic evaluates listening comprehension and reading skills.</li>
-            <li>Total Assessment: <b>9 Dynamic Modules (11 Total Points)</b> | Time Limit: <b>30 Minutes</b>.</li>
+            <li>Total Assessment: <b>9 Dynamic Modules (12 Total Points)</b> | Time Limit: <b>30 Minutes</b>.</li>
             <li><b>Strict Window Policy:</b> Switching tabs or leaving the window is <b>strictly prohibited</b> (Max 3 warnings).</li>
         </ul>
     </div>
@@ -569,14 +569,15 @@ const questions = [
     {
         id: 4,
         type: "multi-dialogue",
-        category: "dialogueResponse",
-        skill: "Conversational Responses",
+        category: "visualReading",
+        skill: "Reading Comprehension (The Moon)",
         mainImg: "Moon.png",
-        instructions: "Read the text and choose the best answer.",
+        instructions: "Read the text and choose the best word for each gap.",
         subQuestions: [
-            { prompt: "Did you enjoy the party, Clare?", options: ["Yes, me too.", "Yes, you did.", "Yes, very much."], correct: 2 },
-            { prompt: "What's your new teacher like, Carla?", options: ["She teaches us English and music.", "She likes playing table tennis.", "She's very nice and friendly."], correct: 2 },
-            { prompt: "I love this photo of your family, David!", options: ["Yes, please!", "If you like!", "So do I!"], correct: 2 }
+            { prompt: "Choose the answer for 7:", options: ["was", "be", "are"], correct: 2 },
+            { prompt: "Choose the answer for 8:", options: ["of", "for", "from"], correct: 0 },
+            { prompt: "Choose the answer for 9:", options: ["took", "take", "taken"], correct: 2 },
+            { prompt: "Choose the answer for 10:", options: ["whose", "that", "what"], correct: 1 }
         ]
     },
     {
@@ -926,7 +927,7 @@ function submitAnswer() {
         });
 
         if (!allAnswered) {
-            alert("Please answer all parts of the dialogue question.");
+            alert("Please answer all parts of this question.");
             return;
         }
 
@@ -1028,7 +1029,7 @@ function finishTest() {
     document.getElementById("testScreen").classList.add("hidden");
     document.getElementById("resultScreen").classList.remove("hidden");
 
-    let totalPoints = 11;
+    let totalPoints = 12;
     let percentage = Math.round((score / totalPoints) * 100);
     let targetGrade = "";
 
