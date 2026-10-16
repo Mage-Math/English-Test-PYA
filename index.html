@@ -371,21 +371,19 @@ button:hover {
     margin-bottom: 5px;
 }
 
-/* Updated styling to enlarge question image */
 .q-img-display {
     max-width: 100%;
-    max-height: 480px;
-    width: auto;
+    max-height: 220px;
     object-fit: contain;
     border-radius: 12px;
     display: block;
     margin: 0 auto 15px auto;
 }
 
-/* Dedicated enlarged view for Question 4 */
-.enlarged-q4-img {
-    max-height: 600px !important;
-    width: 90% !important;
+/* Custom class specifically to enlarge Moon.png */
+.enlarged-moon-img {
+    max-height: 800px !important;
+    width: 95% !important;
 }
 </style>
 </head>
@@ -853,8 +851,8 @@ function renderQuestion() {
 
     if (q.type === 'multi-dialogue') {
         if (q.mainImg) {
-            // Added class 'enlarged-q4-img' specifically for Question 4
-            let imgClass = (q.id === 4) ? "q-img-display enlarged-q4-img" : "q-img-display";
+            // Check specifically for Moon.png to apply enlarged styling
+            let imgClass = (q.mainImg === "Moon.png") ? "q-img-display enlarged-moon-img" : "q-img-display";
             html += `<div style="text-align:center;"><img src="${q.mainImg}" alt="Question Image" class="${imgClass}"></div>`;
         }
         html += `<p style="font-size:14px; font-weight:bold; color:#666;">${q.instructions}</p>`;
@@ -895,7 +893,8 @@ function renderQuestion() {
         `;
     } else {
         if (q.mainImg) {
-            html += `<div style="text-align:center;"><img src="${q.mainImg}" alt="Question Image" class="q-img-display"></div>`;
+            let imgClass = (q.mainImg === "Moon.png") ? "q-img-display enlarged-moon-img" : "q-img-display";
+            html += `<div style="text-align:center;"><img src="${q.mainImg}" alt="Question Image" class="${imgClass}"></div>`;
         } else if (q.svgGraphic) {
             html += `<div style="text-align:center; margin-bottom:15px;">${q.svgGraphic}</div>`;
         }
