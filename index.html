@@ -371,13 +371,21 @@ button:hover {
     margin-bottom: 5px;
 }
 
+/* Updated styling to enlarge question image */
 .q-img-display {
     max-width: 100%;
-    max-height: 220px;
+    max-height: 480px;
+    width: auto;
     object-fit: contain;
     border-radius: 12px;
     display: block;
     margin: 0 auto 15px auto;
+}
+
+/* Dedicated enlarged view for Question 4 */
+.enlarged-q4-img {
+    max-height: 600px !important;
+    width: 90% !important;
 }
 </style>
 </head>
@@ -845,7 +853,9 @@ function renderQuestion() {
 
     if (q.type === 'multi-dialogue') {
         if (q.mainImg) {
-            html += `<div style="text-align:center;"><img src="${q.mainImg}" alt="Question Image" class="q-img-display"></div>`;
+            // Added class 'enlarged-q4-img' specifically for Question 4
+            let imgClass = (q.id === 4) ? "q-img-display enlarged-q4-img" : "q-img-display";
+            html += `<div style="text-align:center;"><img src="${q.mainImg}" alt="Question Image" class="${imgClass}"></div>`;
         }
         html += `<p style="font-size:14px; font-weight:bold; color:#666;">${q.instructions}</p>`;
         q.subQuestions.forEach((sq, sIdx) => {
