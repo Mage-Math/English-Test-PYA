@@ -413,6 +413,7 @@ button:hover {
         <ul>
             <li>This diagnostic evaluates listening comprehension and reading skills.</li>
             <li>Total Assessment: <b>25 Adaptable Questions</b> (Out of 50 Question Pool) | Time Limit: <b>30 Minutes</b>.</li>
+            <li>Placement Levels: <b>Category 1 (A1 - A2)</b> and <b>Category 2 (B1 - B2)</b>.</li>
             <li><b>Strict Window Policy:</b> Switching tabs or leaving the window is <b>strictly prohibited</b> (Max 3 warnings).</li>
         </ul>
     </div>
@@ -455,6 +456,7 @@ button:hover {
             <p style="font-size: 18px; color: #444; margin-top: 15px;">
                 Your answers have been successfully recorded.
             </p>
+            <p id="placementDisplay" style="font-size: 19px; font-weight: bold; color: var(--primary-color);"></p>
             <p id="autoSubmitReason" style="color: #dc2626; font-weight: bold;"></p>
         </div>
 
@@ -482,7 +484,7 @@ button:hover {
                 <th>Time Taken</th>
                 <th>Score</th>
                 <th>%</th>
-                <th>Placement</th>
+                <th>Placement Category</th>
                 <th>Tab Switches</th>
                 <th>Date</th>
                 <th>Action</th>
@@ -529,7 +531,7 @@ let isTestActive = false;
 
 // Adaptive Testing Variables
 let activeQuestionsSequence = [];
-let currentAdaptationLevel = 1; // Level 1 = Pre-A1 (Starters), Level 2 = A1 (Movers)
+let currentAdaptationLevel = 1; // Level 1 = Category 1 (A1 - A2), Level 2 = Category 2 (B1 - B2)
 let usedQuestionIds = new Set();
 
 document.addEventListener("visibilitychange", handleTabSwitch);
@@ -550,14 +552,14 @@ function handleTabSwitch() {
     }
 }
 
-/* 50 ADAPTABLE CAMBRIDGE ENGLISH ACTIVITIES QUESTIONS (2 LEVELS) */
+/* 50 ADAPTABLE CAMBRIDGE ENGLISH ACTIVITIES QUESTIONS FOR CATEGORY 1 & 2 CLASSIFICATION */
 const questionPool = [
-    // --- LEVEL 1 QUESTIONS (Pre-A1 Starters / Lower Primary) ---
+    // --- CATEGORY 1 QUESTIONS (A1 - A2 Level) ---
     {
         id: 1,
         level: 1,
         category: "visualReading",
-        skill: "Vocabulary: Animals",
+        skill: "Vocabulary: Basic Objects",
         title: "Look at the picture. What is this?",
         mainImg: "Banana.png",
         options: ["This is a cat", "This is a banana", "This is a dog"],
@@ -567,7 +569,7 @@ const questionPool = [
         id: 2,
         level: 1,
         category: "visualReading",
-        skill: "Vocabulary: Birds",
+        skill: "Vocabulary: Animals",
         title: "Look at the picture. Choose the correct sentence.",
         mainImg: "B1.png",
         options: ["These are bees.", "These are bears.", "These are birds."],
@@ -817,7 +819,7 @@ const questionPool = [
         correct: 0
     },
 
-    // --- LEVEL 2 QUESTIONS (A1 Movers / Upper Primary) ---
+    // --- CATEGORY 2 QUESTIONS (B1 - B2 Level) ---
     {
         id: 26,
         level: 2,
@@ -1111,7 +1113,7 @@ function renderTableData(records) {
                 <td>${r.timeTaken || 'N/A'}</td>
                 <td>${r.score} / ${r.total}</td>
                 <td>${r.percentage}%</td>
-                <td>${r.placement}</td>
+                <td><b>${r.placement}</b></td>
                 <td>${switchBadge}</td>
                 <td>${r.date}</td>
                 <td><button class="btn-small btn-secondary" onclick="viewStudentDetails(${index})">View Breakdown</button></td>
@@ -1168,7 +1170,7 @@ function exportClassExcel() {
         return;
     }
 
-    let csv = "\uFEFFStudent Name,Time Taken,Score,Total Attempted,Percentage,Placement,Tab Switches,Visual Reading,Dialogue Responses,Listening Comprehension,Date,Question Number,Skill,Question Text,Student Answer,Correct Answer,Status\n";
+    let csv = "\uFEFFStudent Name,Time Taken,Score,Total Attempted,Percentage,Placement Category,Tab Switches,Visual Reading,Dialogue Responses,Listening Comprehension,Date,Question Number,Skill,Question Text,Student Answer,Correct Answer,Status\n";
     
     records.forEach(r => {
         let b = r.breakdown || {};
@@ -1213,7 +1215,6 @@ function getFormattedTimeTaken() {
 function getNextAdaptiveQuestion(targetLevel) {
     let candidates = questionPool.filter(q => q.level === targetLevel && !usedQuestionIds.has(q.id));
     if (candidates.length === 0) {
-        // Fallback to any remaining unused question if specific target level pool is exhausted
         candidates = questionPool.filter(q => !usedQuestionIds.has(q.id));
     }
     if (candidates.length === 0) return null;
@@ -1239,7 +1240,6 @@ function startTest() {
     activeQuestionsSequence = [];
     currentAdaptationLevel = 1;
 
-    // Fetch first adaptative question (Level 1)
     let firstQ = getNextAdaptiveQuestion(1);
     if (firstQ) activeQuestionsSequence.push(firstQ);
 
@@ -1405,16 +1405,15 @@ function submitAnswer() {
             category: q.category,
             skill: q.skill,
             selectedAnswer: q.options[selectedIndex],
-            correctAnswer: q.options[selectedIndex],
+            correctAnswer: q.options[q.correct],
             isCorrect: isCorrect
         });
     }
 
-    // Adaptive adjustment based on performance
     if (questionWasCorrect) {
-        currentAdaptationLevel = 2; // Step up difficulty to Level 2 (Movers)
+        currentAdaptationLevel = 2; // Move up to Category 2 (B1 - B2) level questions
     } else {
-        currentAdaptationLevel = 1; // Adapt back to Level 1 (Starters)
+        currentAdaptationLevel = 1; // Adapt back to Category 1 (A1 - A2) level questions
     }
 
     currentQuestionIndex++;
@@ -1470,20 +1469,22 @@ function finishTest() {
 
     let totalPoints = studentAnswersList.length || MAX_TEST_QUESTIONS;
     let percentage = Math.round((score / totalPoints) * 100);
-    let targetGrade = "";
+    let targetCategory = "";
 
-    // Categorizes learners into 2 primary levels
-    if (percentage >= 65) {
-        targetGrade = "Level 2: A1 Elementary (Movers)";
+    // Classification criteria: Category 1 (A1 - A2) vs Category 2 (B1 - B2)
+    if (percentage >= 60) {
+        targetCategory = "Category 2 (B1 - B2)";
     } else {
-        targetGrade = "Level 1: Pre-A1 Beginner (Starters)";
+        targetCategory = "Category 1 (A1 - A2)";
     }
 
     document.getElementById("displayStudentName").textContent = studentName;
-    sendToCloudDatabase(percentage, targetGrade, totalPoints);
+    document.getElementById("placementDisplay").textContent = `Assigned Level: ${targetCategory}`;
+    
+    sendToCloudDatabase(percentage, targetCategory, totalPoints);
 }
 
-function sendToCloudDatabase(percentage, placement, total) {
+function sendToCloudDatabase(percentage, placementCategory, total) {
     document.getElementById("savingMessage").textContent = "Submitting to central database...";
     
     const breakdown = calculateCategoryBreakdown();
@@ -1495,7 +1496,7 @@ function sendToCloudDatabase(percentage, placement, total) {
         score: score,
         total: total,
         percentage: percentage,
-        placement: placement,
+        placement: placementCategory, // Saved directly to Google Sheet
         tabSwitches: tabSwitchCount,
         breakdown: breakdown,
         date: new Date().toLocaleDateString(),
