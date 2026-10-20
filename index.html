@@ -412,7 +412,7 @@ button:hover {
         <b>📌 Important Instructions:</b>
         <ul>
             <li>This diagnostic evaluates listening comprehension and reading skills.</li>
-            <li>Total Assessment: <b>9 Dynamic Modules (12 Total Points)</b> | Time Limit: <b>30 Minutes</b>.</li>
+            <li>Total Assessment: <b>25 Adaptable Questions</b> (Out of 50 Question Pool) | Time Limit: <b>30 Minutes</b>.</li>
             <li><b>Strict Window Policy:</b> Switching tabs or leaving the window is <b>strictly prohibited</b> (Max 3 warnings).</li>
         </ul>
     </div>
@@ -430,7 +430,7 @@ button:hover {
 <!-- TEST SCREEN -->
 <div id="testScreen" class="hidden">
     <div class="header-status">
-        <div class="progress">Question <span id="questionNumber">1</span> of 9</div>
+        <div class="progress">Question <span id="questionNumber">1</span> of 25</div>
         <div class="timer-box">Time Left: <span id="timeDisplay">30:00</span></div>
     </div>
 
@@ -511,6 +511,7 @@ const TEACHER_PIN = "egam@2026";
 
 const TIME_LIMIT_SECONDS = 30 * 60;
 const MAX_TAB_SWITCHES = 3;
+const MAX_TEST_QUESTIONS = 25;
 
 let studentName = "";
 let currentQuestionIndex = 0;
@@ -525,6 +526,11 @@ let testStartTime = null;
 
 let tabSwitchCount = 0;
 let isTestActive = false;
+
+// Adaptive Testing Variables
+let activeQuestionsSequence = [];
+let currentAdaptationLevel = 1; // Level 1 = Pre-A1 (Starters), Level 2 = A1 (Movers)
+let usedQuestionIds = new Set();
 
 document.addEventListener("visibilitychange", handleTabSwitch);
 
@@ -544,53 +550,162 @@ function handleTabSwitch() {
     }
 }
 
-const questions = [
+/* 50 ADAPTABLE CAMBRIDGE ENGLISH ACTIVITIES QUESTIONS (2 LEVELS) */
+const questionPool = [
+    // --- LEVEL 1 QUESTIONS (Pre-A1 Starters / Lower Primary) ---
     {
         id: 1,
+        level: 1,
         category: "visualReading",
-        skill: "Visual Identification (Banana)",
-        title: "Choose your answer",
+        skill: "Vocabulary: Animals",
+        title: "Look at the picture. What is this?",
         mainImg: "Banana.png",
-        options: ["This is blue", "This is yellow", "This is red"],
+        options: ["This is a cat", "This is a banana", "This is a dog"],
         correct: 1
     },
     {
         id: 2,
+        level: 1,
         category: "visualReading",
-        skill: "Visual Identification (Birds)",
-        title: "Choose your answer",
+        skill: "Vocabulary: Birds",
+        title: "Look at the picture. Choose the correct sentence.",
         mainImg: "B1.png",
         options: ["These are bees.", "These are bears.", "These are birds."],
         correct: 2
     },
     {
         id: 3,
+        level: 1,
         category: "visualReading",
-        skill: "Visual Weather Context",
-        title: "Choose your answer",
+        skill: "Weather Identification",
+        title: "Choose the best description for the picture.",
         mainImg: "Rain.png",
         options: ["It's a sunny day.", "It's a rainy day.", "It's a windy day."],
         correct: 1
     },
     {
         id: 4,
-        type: "multi-dialogue",
+        level: 1,
         category: "visualReading",
-        skill: "Reading Comprehension (The Moon)",
-        mainImg: "Moon.png",
-        instructions: "Read the text and choose the best word for each gap.",
-        subQuestions: [
-            { prompt: "Choose the answer for 7:", options: ["was", "be", "are"], correct: 2 },
-            { prompt: "Choose the answer for 8:", options: ["of", "for", "from"], correct: 0 },
-            { prompt: "Choose the answer for 9:", options: ["took", "take", "taken"], correct: 2 },
-            { prompt: "Choose the answer for 10:", options: ["whose", "that", "what"], correct: 1 }
-        ]
+        skill: "Classroom Vocabulary",
+        title: "Where do students sit and write in a classroom?",
+        options: ["On a desk", "On a door", "On a lamp"],
+        correct: 0
     },
     {
         id: 5,
-        type: "audio-listening",
+        level: 1,
+        category: "visualReading",
+        skill: "Colors & Objects",
+        title: "Complete the sentence: An apple is usually ____.",
+        options: ["blue", "red", "purple"],
+        correct: 1
+    },
+    {
+        id: 6,
+        level: 1,
+        category: "dialogueResponse",
+        skill: "Simple Greetings",
+        title: "Sam: 'Hello! What's your name?'",
+        options: ["I'm nine years old.", "My name is Tom.", "I like apples."],
+        correct: 1
+    },
+    {
+        id: 7,
+        level: 1,
+        category: "dialogueResponse",
+        skill: "Asking Age",
+        title: "Teacher: 'How old are you?'",
+        options: ["I'm fine, thank you.", "I'm seven.", "Yes, please."],
+        correct: 1
+    },
+    {
+        id: 8,
+        level: 1,
+        category: "visualReading",
+        skill: "Prepositions of Place",
+        title: "The cat is sleeping ____ the chair.",
+        options: ["under", "between", "next"],
+        correct: 0
+    },
+    {
+        id: 9,
+        level: 1,
+        category: "visualReading",
+        skill: "Body Parts",
+        title: "We use our ____ to see things.",
+        options: ["ears", "eyes", "hands"],
+        correct: 1
+    },
+    {
+        id: 10,
+        level: 1,
+        category: "visualReading",
+        skill: "Family Vocabulary",
+        title: "My father's mother is my ____.",
+        options: ["sister", "grandmother", "mother"],
+        correct: 1
+    },
+    {
+        id: 11,
+        level: 1,
+        category: "dialogueResponse",
+        skill: "Offering Help",
+        title: "Lucy: 'Would you like an orange juice?'",
+        options: ["Yes, please.", "No, it isn't.", "Here you are."],
+        correct: 0
+    },
+    {
+        id: 12,
+        level: 1,
+        category: "visualReading",
+        skill: "Plurals",
+        title: "Look! There are three ____ in the garden.",
+        options: ["flower", "flowers", "flowering"],
+        correct: 1
+    },
+    {
+        id: 13,
+        level: 1,
+        category: "visualReading",
+        skill: "Present Continuous",
+        title: "The boy is ____ a bicycle.",
+        options: ["riding", "flying", "swimming"],
+        correct: 0
+    },
+    {
+        id: 14,
+        level: 1,
+        category: "visualReading",
+        skill: "Food & Drinks",
+        title: "Which of these is a fruit?",
+        options: ["Carrot", "Mango", "Milk"],
+        correct: 1
+    },
+    {
+        id: 15,
+        level: 1,
+        category: "dialogueResponse",
+        skill: "Answering Questions",
+        title: "Ben: 'Can you swim?'",
+        options: ["Yes, I can.", "Yes, I do.", "Yes, I am."],
+        correct: 0
+    },
+    {
+        id: 16,
+        level: 1,
+        category: "visualReading",
+        skill: "Clothes Vocabulary",
+        title: "You wear these on your feet:",
+        options: ["Hats", "Shoes", "Shirts"],
+        correct: 1
+    },
+    {
+        id: 17,
+        level: 1,
         category: "listeningComprehension",
         skill: "Listening: Location Identification",
+        type: "audio-listening",
         instructions: "Listen and choose the best answer. You will hear each recording twice.",
         prompt: "Where's Dad now?",
         audioSrc: "q11.mp3",
@@ -602,10 +717,11 @@ const questions = [
         correct: 2
     },
     {
-        id: 6,
-        type: "audio-listening",
+        id: 18,
+        level: 1,
         category: "listeningComprehension",
         skill: "Listening: Details & Clothes",
+        type: "audio-listening",
         instructions: "Listen and choose the best answer. You will hear each recording twice.",
         prompt: "What will Natalie wear to the party?",
         audioSrc: "q12.mp3",
@@ -617,10 +733,11 @@ const questions = [
         correct: 0
     },
     {
-        id: 7,
-        type: "audio-listening",
+        id: 19,
+        level: 1,
         category: "listeningComprehension",
         skill: "Listening: Current Activity",
+        type: "audio-listening",
         instructions: "Listen and choose the best answer. You will hear each recording twice.",
         prompt: "What's Ellie doing now?",
         audioSrc: "q13.mp3",
@@ -632,10 +749,11 @@ const questions = [
         correct: 2
     },
     {
-        id: 8,
-        type: "audio-listening",
+        id: 20,
+        level: 1,
         category: "listeningComprehension",
         skill: "Listening: Objects & Favorites",
+        type: "audio-listening",
         instructions: "Listen and choose the best answer. You will hear each recording twice.",
         prompt: "What's the girl's favourite birthday present?",
         audioSrc: "q14.mp3",
@@ -647,10 +765,11 @@ const questions = [
         correct: 0
     },
     {
-        id: 9,
-        type: "audio-listening",
+        id: 21,
+        level: 1,
         category: "listeningComprehension",
         skill: "Listening: Time & Schedule",
+        type: "audio-listening",
         instructions: "Listen and choose the best answer. You will hear each recording twice.",
         prompt: "What time is the football match?",
         audioSrc: "q15.mp3",
@@ -660,6 +779,275 @@ const questions = [
             { label: "3:45", img: "C3.png" }
         ],
         correct: 2
+    },
+    {
+        id: 22,
+        level: 1,
+        category: "visualReading",
+        skill: "Numbers 1-20",
+        title: "How many legs does a spider have?",
+        options: ["Six", "Eight", "Ten"],
+        correct: 1
+    },
+    {
+        id: 23,
+        level: 1,
+        category: "visualReading",
+        skill: "Demonstrative Pronouns",
+        title: "Look at ____ bird high in the tree!",
+        options: ["that", "these", "this"],
+        correct: 0
+    },
+    {
+        id: 24,
+        level: 1,
+        category: "visualReading",
+        skill: "Basic Adjectives",
+        title: "An elephant is ____, but a mouse is small.",
+        options: ["big", "short", "thin"],
+        correct: 0
+    },
+    {
+        id: 25,
+        level: 1,
+        category: "dialogueResponse",
+        skill: "Expressing Likes",
+        title: "Alex: 'Do you like chocolate ice cream?'",
+        options: ["Yes, I do!", "No, I am not.", "It is blue."],
+        correct: 0
+    },
+
+    // --- LEVEL 2 QUESTIONS (A1 Movers / Upper Primary) ---
+    {
+        id: 26,
+        level: 2,
+        category: "visualReading",
+        skill: "Reading Comprehension (The Moon)",
+        type: "multi-dialogue",
+        mainImg: "Moon.png",
+        instructions: "Read the text and choose the best word for each gap.",
+        subQuestions: [
+            { prompt: "Choose the answer for 7:", options: ["was", "be", "are"], correct: 2 },
+            { prompt: "Choose the answer for 8:", options: ["of", "for", "from"], correct: 0 },
+            { prompt: "Choose the answer for 9:", options: ["took", "take", "taken"], correct: 2 },
+            { prompt: "Choose the answer for 10:", options: ["whose", "that", "what"], correct: 1 }
+        ]
+    },
+    {
+        id: 27,
+        level: 2,
+        category: "visualReading",
+        skill: "Past Simple Tense",
+        title: "Yesterday, May ____ to the park with her dog.",
+        options: ["go", "went", "going"],
+        correct: 1
+    },
+    {
+        id: 28,
+        level: 2,
+        category: "visualReading",
+        skill: "Comparatives",
+        title: "A giraffe is ____ than a horse.",
+        options: ["taller", "tall", "tallest"],
+        correct: 0
+    },
+    {
+        id: 29,
+        level: 2,
+        category: "dialogueResponse",
+        skill: "Making Suggestions",
+        title: "Nick: 'Shall we play table tennis after school?'",
+        options: ["Good idea!", "I am ten.", "Yes, I was."],
+        correct: 0
+    },
+    {
+        id: 30,
+        level: 2,
+        category: "visualReading",
+        skill: "Conjunctions",
+        title: "Peter wanted to go outside, ____ it started to rain.",
+        options: ["because", "but", "so"],
+        correct: 1
+    },
+    {
+        id: 31,
+        level: 2,
+        category: "visualReading",
+        skill: "Frequency Adverbs",
+        title: "She ____ eats breakfast before going to school every morning.",
+        options: ["never", "always", "sometimes"],
+        correct: 1
+    },
+    {
+        id: 32,
+        level: 2,
+        category: "visualReading",
+        skill: "Relative Pronouns",
+        title: "This is the doctor ____ helped my brother.",
+        options: ["who", "which", "where"],
+        correct: 0
+    },
+    {
+        id: 33,
+        level: 2,
+        category: "dialogueResponse",
+        skill: "Asking Directions",
+        title: "Tourist: 'Excuse me, where is the library?'",
+        options: ["It's next to the supermarket.", "Yes, I read books.", "It is very nice."],
+        correct: 0
+    },
+    {
+        id: 34,
+        level: 2,
+        category: "visualReading",
+        skill: "Superlatives",
+        title: "Mount Everest is the ____ mountain in the world.",
+        options: ["high", "higher", "highest"],
+        correct: 2
+    },
+    {
+        id: 35,
+        level: 2,
+        category: "visualReading",
+        skill: "Modal Verbs",
+        title: "You ____ wash your hands before eating dinner.",
+        options: ["should", "could", "would"],
+        correct: 0
+    },
+    {
+        id: 36,
+        level: 2,
+        category: "visualReading",
+        skill: "Irregular Past Tense",
+        title: "John ____ a beautiful picture in art class yesterday.",
+        options: ["draw", "drew", "drawn"],
+        correct: 1
+    },
+    {
+        id: 37,
+        level: 2,
+        category: "dialogueResponse",
+        skill: "Polite Requests",
+        title: "Child: 'Could I have some water, please?'",
+        options: ["Here you are.", "No, I don't.", "Yes, I am."],
+        correct: 0
+    },
+    {
+        id: 38,
+        level: 2,
+        category: "visualReading",
+        skill: "Time Prepositions",
+        title: "Our school concert starts ____ 5 o'clock in the afternoon.",
+        options: ["at", "on", "in"],
+        correct: 0
+    },
+    {
+        id: 39,
+        level: 2,
+        category: "visualReading",
+        skill: "Possessive Pronouns",
+        title: "That coat belongs to Sarah. It is ____.",
+        options: ["hers", "his", "yours"],
+        correct: 0
+    },
+    {
+        id: 40,
+        level: 2,
+        category: "dialogueResponse",
+        skill: "Expressing Opinion",
+        title: "Paul: 'What do you think of this film?'",
+        options: ["It's very exciting!", "I saw it yesterday.", "Yes, please."],
+        correct: 0
+    },
+    {
+        id: 41,
+        level: 2,
+        category: "visualReading",
+        skill: "Future with 'going to'",
+        title: "Tomorrow, we are ____ to visit the city museum.",
+        options: ["go", "going", "went"],
+        correct: 1
+    },
+    {
+        id: 42,
+        level: 2,
+        category: "visualReading",
+        skill: "Quantifiers",
+        title: "How ____ milk is left in the fridge?",
+        options: ["many", "much", "few"],
+        correct: 1
+    },
+    {
+        id: 43,
+        level: 2,
+        category: "visualReading",
+        skill: "Adverbs of Manner",
+        title: "The musician played the piano ____.",
+        options: ["beautiful", "beautifully", "beauty"],
+        correct: 1
+    },
+    {
+        id: 44,
+        level: 2,
+        category: "dialogueResponse",
+        skill: "Apologizing",
+        title: "Friend: 'I'm sorry I lost your pencil.'",
+        options: ["That's okay, don't worry.", "You're welcome.", "Yes, please."],
+        correct: 0
+    },
+    {
+        id: 45,
+        level: 2,
+        category: "visualReading",
+        skill: "Past Continuous",
+        title: "While it was raining, the children ____ indoor games.",
+        options: ["are playing", "were playing", "play"],
+        correct: 1
+    },
+    {
+        id: 46,
+        level: 2,
+        category: "visualReading",
+        skill: "Indefinite Pronouns",
+        title: "Is there ____ in the classroom right now?",
+        options: ["anyone", "someone", "no one"],
+        correct: 0
+    },
+    {
+        id: 47,
+        level: 2,
+        category: "dialogueResponse",
+        skill: "Frequency Questions",
+        title: "Teacher: 'How often do you visit the library?'",
+        options: ["Twice a week.", "In two hours.", "Yes, I do."],
+        correct: 0
+    },
+    {
+        id: 48,
+        level: 2,
+        category: "visualReading",
+        skill: "Prepositions of Movement",
+        title: "The train went ____ the tunnel.",
+        options: ["through", "over", "underneath"],
+        correct: 0
+    },
+    {
+        id: 49,
+        level: 2,
+        category: "visualReading",
+        skill: "Vocabulary: Environment",
+        title: "A large area of land covered with many trees is called a ____.",
+        options: ["forest", "beach", "desert"],
+        correct: 0
+    },
+    {
+        id: 50,
+        level: 2,
+        category: "dialogueResponse",
+        skill: "Confirming Plans",
+        title: "Emma: 'Are you coming to my birthday party on Saturday?'",
+        options: ["I'd love to! Thanks for inviting me.", "Happy Birthday!", "It is on Saturday."],
+        correct: 0
     }
 ];
 
@@ -822,6 +1210,18 @@ function getFormattedTimeTaken() {
     return `${mins}m ${secs}s`;
 }
 
+function getNextAdaptiveQuestion(targetLevel) {
+    let candidates = questionPool.filter(q => q.level === targetLevel && !usedQuestionIds.has(q.id));
+    if (candidates.length === 0) {
+        // Fallback to any remaining unused question if specific target level pool is exhausted
+        candidates = questionPool.filter(q => !usedQuestionIds.has(q.id));
+    }
+    if (candidates.length === 0) return null;
+    let selected = candidates[Math.floor(Math.random() * candidates.length)];
+    usedQuestionIds.add(selected.id);
+    return selected;
+}
+
 function startTest() {
     studentName = document.getElementById("studentName").value.trim();
     if (!studentName) {
@@ -835,6 +1235,13 @@ function startTest() {
     isTestActive = true;
     testStartTime = Date.now();
     studentAnswersList = [];
+    usedQuestionIds.clear();
+    activeQuestionsSequence = [];
+    currentAdaptationLevel = 1;
+
+    // Fetch first adaptative question (Level 1)
+    let firstQ = getNextAdaptiveQuestion(1);
+    if (firstQ) activeQuestionsSequence.push(firstQ);
 
     document.getElementById("startScreen").classList.add("hidden");
     document.getElementById("testScreen").classList.remove("hidden");
@@ -844,14 +1251,13 @@ function startTest() {
 
 function renderQuestion() {
     selectedMediaOption = null;
-    const q = questions[currentQuestionIndex];
+    const q = activeQuestionsSequence[currentQuestionIndex];
     document.getElementById("questionNumber").textContent = `${currentQuestionIndex + 1}`;
 
     let html = "";
 
     if (q.type === 'multi-dialogue') {
         if (q.mainImg) {
-            // Check specifically for Moon.png to apply enlarged styling
             let imgClass = (q.mainImg === "Moon.png") ? "q-img-display enlarged-moon-img" : "q-img-display";
             html += `<div style="text-align:center;"><img src="${q.mainImg}" alt="Question Image" class="${imgClass}"></div>`;
         }
@@ -926,7 +1332,8 @@ function selectMediaCard(index) {
 }
 
 function submitAnswer() {
-    const q = questions[currentQuestionIndex];
+    const q = activeQuestionsSequence[currentQuestionIndex];
+    let questionWasCorrect = false;
 
     if (q.type === 'multi-dialogue') {
         let allAnswered = true;
@@ -940,10 +1347,12 @@ function submitAnswer() {
             return;
         }
 
+        let multiCorrect = true;
         q.subQuestions.forEach((sq, sIdx) => {
             const selected = Number(document.querySelector(`input[name="sub_q_${sIdx}"]:checked`).value);
             const isCorrect = selected === sq.correct;
             if (isCorrect) score++;
+            else multiCorrect = false;
 
             studentAnswersList.push({
                 question: sq.prompt,
@@ -954,6 +1363,7 @@ function submitAnswer() {
                 isCorrect: isCorrect
             });
         });
+        questionWasCorrect = multiCorrect;
 
     } else if (q.type === 'audio-listening') {
         if (selectedMediaOption === null) {
@@ -962,7 +1372,10 @@ function submitAnswer() {
         }
 
         const isCorrect = selectedMediaOption === q.correct;
-        if (isCorrect) score++;
+        if (isCorrect) {
+            score++;
+            questionWasCorrect = true;
+        }
 
         studentAnswersList.push({
             question: q.prompt,
@@ -982,21 +1395,38 @@ function submitAnswer() {
 
         const selectedIndex = Number(selected.value);
         const isCorrect = selectedIndex === q.correct;
-        if (isCorrect) score++;
+        if (isCorrect) {
+            score++;
+            questionWasCorrect = true;
+        }
 
         studentAnswersList.push({
             question: q.title,
             category: q.category,
             skill: q.skill,
             selectedAnswer: q.options[selectedIndex],
-            correctAnswer: q.options[q.correct],
+            correctAnswer: q.options[selectedIndex],
             isCorrect: isCorrect
         });
     }
 
+    // Adaptive adjustment based on performance
+    if (questionWasCorrect) {
+        currentAdaptationLevel = 2; // Step up difficulty to Level 2 (Movers)
+    } else {
+        currentAdaptationLevel = 1; // Adapt back to Level 1 (Starters)
+    }
+
     currentQuestionIndex++;
-    if (currentQuestionIndex < questions.length) {
-        renderQuestion();
+
+    if (currentQuestionIndex < MAX_TEST_QUESTIONS) {
+        let nextQ = getNextAdaptiveQuestion(currentAdaptationLevel);
+        if (nextQ) {
+            activeQuestionsSequence.push(nextQ);
+            renderQuestion();
+        } else {
+            finishTest();
+        }
     } else {
         finishTest();
     }
@@ -1038,16 +1468,15 @@ function finishTest() {
     document.getElementById("testScreen").classList.add("hidden");
     document.getElementById("resultScreen").classList.remove("hidden");
 
-    let totalPoints = 12;
+    let totalPoints = studentAnswersList.length || MAX_TEST_QUESTIONS;
     let percentage = Math.round((score / totalPoints) * 100);
     let targetGrade = "";
 
-    if (percentage >= 80) {
-        targetGrade = "Advanced English Track";
-    } else if (percentage >= 55) {
-        targetGrade = "Standard English Track";
+    // Categorizes learners into 2 primary levels
+    if (percentage >= 65) {
+        targetGrade = "Level 2: A1 Elementary (Movers)";
     } else {
-        targetGrade = "Foundation English Track";
+        targetGrade = "Level 1: Pre-A1 Beginner (Starters)";
     }
 
     document.getElementById("displayStudentName").textContent = studentName;
